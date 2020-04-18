@@ -8,7 +8,19 @@ import os
 
 app = Flask(__name__)
 
-@app.route("/long/<sign>", methods=["GET"])
+@app.route("/", methods=["GET"])
+def authRes():
+	y={
+	'Short Horoscope': 'https://devbrewer-horoscope.herokuapp.com/short/$sun_sign$',
+	'Detailed Horoscope': 'https://devbrewer-horoscope.herokuapp.com/long/$sun_sign$',
+	'Collaborator 1': {'Name':'Saptarshi Mazumdar',
+	'@': 'http://bit.ly/saptarshimazumdar'},
+	'Collaborator 2': {'Name':'Suryanarayan Rath',
+	'@': 'NA'}
+	}
+	return json.dumps(y)
+
+@app.route("/today/long/<sign>", methods=["GET"])
 def retTodayD(sign):
 	try:
 		x = datetime.datetime.now()
@@ -21,9 +33,9 @@ def retTodayD(sign):
 			'Daily': results[1].string, 'Health': results[2].string, 'Love': results[3].string, 'Career': results[5].string}}
 		return json.dumps(m)
 	except:
-		return "Internal Server Error: Status 500 || Check URL brfore proceed."
+		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
 
-@app.route("/short/<sign>", methods=["GET"])
+@app.route("/today/short/<sign>", methods=["GET"])
 def retTodayS(sign):
 	try:
 		x = datetime.datetime.now()
@@ -38,9 +50,57 @@ def retTodayS(sign):
 		'Icon': 'https://www.horoscope.com/images-US/signs/'+
 		soup.title.string[:soup.title.string.index(':')].split(" ")[0].lower()+'.png',
 		'Today': results[0].text[results[0].text.index('-')+2:]}
+		results = soup.find_all('div', {'class':'inner flex-center-inline'})
+		temp= []
+		for i in results[0].text.strip().split("\n"):
+			if i != '':
+				temp.append(i)
+		d['Matchs']={
+			temp[0]:temp[1], temp[2]:temp[3], temp[4]:temp[5]
+		}
 		return json.dumps(d)
 	except:
-		return "Internal Server Error: Status 500 || Check URL brfore proceed."
+		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
+
+@app.route("/week/short/<sign>", methods=["GET"])
+def retWeekS(sign):
+	try:
+		x = datetime.datetime.now()
+		signs=['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 
+		'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']
+		r= requests.get('https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign={}'
+			.format(signs.index(sign.lower())+1))
+		soup = BeautifulSoup(r.text, 'html.parser')
+		results = soup.find_all('p')
+		d={'Desc': 'Brief', 'Week': x.strftime("%U")}
+		d[soup.title.string.split(" ")[0]]={
+		'Icon': 'https://www.horoscope.com/images-US/signs/'+
+		soup.title.string.split(" ")[0].lower()+'.png',
+		'This Week': results[0].text[results[0].text.index('- ')+2:]}
+		return json.dumps(d)
+	except:
+		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
+
+@app.route("/month/short/<sign>", methods=["GET"])
+def retMonthS(sign):
+	try:
+		x = datetime.datetime.now()
+		signs=['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 
+		'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']
+		r= requests.get('https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign={}'
+			.format(signs.index(sign.lower())+1))
+		soup = BeautifulSoup(r.text, 'html.parser')
+		results = soup.find_all('p')
+		d={'Desc': 'Brief', 'Month': x.strftime("%m")}
+		d[soup.title.string.split(" ")[0]]={
+		'Icon': 'https://www.horoscope.com/images-US/signs/'+
+		soup.title.string.split(" ")[0].lower()+'.png',
+		'This Month': results[0].text[results[0].text.index('- ')+2:results[0].text.index('Standout')],
+		'Best Days': results[0].text[results[0].text.index('Standout days'):results[0].text.index('Challenging')][15:],
+		'Worst Days': results[0].text[results[0].text.index('Challenging days'):][18:]}
+		return json.dumps(d)
+	except:
+		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
 
 if __name__ == '__main__':
-    app.run(host= "0.0.0.0", port= os.environ.get('PORT', 48080), threaded=True)
+    app.run(host= "0.0.0.0", debug=True, threaded=True)
