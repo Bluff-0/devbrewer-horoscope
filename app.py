@@ -13,7 +13,7 @@ def authRes():
 	y={
 	'Home': 'https://devbrewer-horoscope.herokuapp.com/',
 	'Short Horoscopes': {
-	'Today':'https://devbrewer-horoscope.herokuapp.com/Today/short/Aries',
+	'Today':'https://devbrewer-horoscope.herokuapp.com/today/short/Aries',
 	'This Week': 'https://devbrewer-horoscope.herokuapp.com/week/short/Aries',
 	'This Month': 'https://devbrewer-horoscope.herokuapp.com/month/short/Aries'},
 	'Detailed Horoscope': 'https://devbrewer-horoscope.herokuapp.com/today/long/Aries',
