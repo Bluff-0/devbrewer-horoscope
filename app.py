@@ -32,6 +32,7 @@ def retTodayD(sign):
 		m={'Desc': 'Descriptive', 'Date': x.strftime("%x"), ns:{'Icon': 'https://www.horoscope.com/images-US/signs/'+sign+'.png',
 			'Daily': results[1].string, 'Health': results[2].string, 'Love': results[3].string, 'Career': results[5].string}}
 		return json.dumps(m)
+		m['From']= 'https://www.prokerala.com/'
 	except:
 		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
 
@@ -58,6 +59,7 @@ def retTodayS(sign):
 		d['Matchs']={
 			temp[0]:temp[1], temp[2]:temp[3], temp[4]:temp[5]
 		}
+		d['From']= 'https://www.horoscope.com/'
 		return json.dumps(d)
 	except:
 		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
@@ -77,6 +79,7 @@ def retWeekS(sign):
 		'Icon': 'https://www.horoscope.com/images-US/signs/'+
 		soup.title.string.split(" ")[0].lower()+'.png',
 		'This Week': results[0].text[results[0].text.index('- ')+2:]}
+		d['From']= 'https://www.horoscope.com/'
 		return json.dumps(d)
 	except:
 		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
@@ -98,9 +101,37 @@ def retMonthS(sign):
 		'This Month': results[0].text[results[0].text.index('- ')+2:results[0].text.index('Standout')],
 		'Best Days': results[0].text[results[0].text.index('Standout days'):results[0].text.index('Challenging')][15:],
 		'Worst Days': results[0].text[results[0].text.index('Challenging days'):][18:]}
+		d['From']= 'https://www.horoscope.com/'
 		return json.dumps(d)
 	except:
 		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"
+
+@app.route("/match/<sign1>/<sign2>", methods=["GET"])
+def signMatch(sign1,sign2):
+	try:
+		r= requests.get('https://www.astrology.com/love/compatibility/{}-{}.html'
+			.format(sign1.lower(), sign2.lower()))
+		soup= BeautifulSoup(r.text, 'html.parser')
+		results= soup.find_all('p')
+
+		txt=''
+		for i in range(len(results)):
+			try:
+				if results[i].string[:24]=='Check the love potential':
+					break
+				else:
+					txt+= results[i].string+' '
+			except:
+				continue
+		d={
+		'Sign 1': sign1.lower(),
+		'Sign 2': sign2.lower(),
+		'Result': txt,
+		'From': 'https://www.astrology.com/'
+		}
+		return json.dumps(d)
+	except:
+		return "<h1>Internal Server Error: Status 500 || Check URL brfore proceed.</h1>"		
 
 if __name__ == '__main__':
     app.run(host= "0.0.0.0", debug=True, threaded=True)
