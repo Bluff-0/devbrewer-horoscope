@@ -11,12 +11,21 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def authRes():
 	y={
-	'Short Horoscope': 'https://devbrewer-horoscope.herokuapp.com/short/$sun_sign$',
-	'Detailed Horoscope': 'https://devbrewer-horoscope.herokuapp.com/long/$sun_sign$',
-	'Collaborator 1': {'Name':'Saptarshi Mazumdar',
+	'Home': 'https://devbrewer-horoscope.herokuapp.com/',
+	'Short Horoscopes': {
+	'Today':'https://devbrewer-horoscope.herokuapp.com/Today/short/Aries'
+	'This Week': 'https://devbrewer-horoscope.herokuapp.com/week/short/Aries'
+	'This Month': 'https://devbrewer-horoscope.herokuapp.com/month/short/Aries'},
+	'Detailed Horoscope': 'https://devbrewer-horoscope.herokuapp.com/today/long/Aries',
+	'Love Match': 'https://devbrewer-horoscope.herokuapp.com/match/Aries/Libra',
+	'Collaborator': {'Name':'Saptarshi Mazumdar',
 	'@': 'http://bit.ly/saptarshimazumdar'},
-	'Collaborator 2': {'Name':'Suryanarayan Rath',
-	'@': 'NA'}
+	'Ideator': {'Name':'Suryanarayan Rath',
+	'@': 'NA'},
+	'Helping Webs': {
+	'1': 'https://www.horoscope.com/',
+	'2': 'https://www.prokerala.com/',
+	'3': 'https://www.astrology.com/'}
 	}
 	return json.dumps(y)
 
