@@ -115,7 +115,7 @@ def signMatch(sign1,sign2):
 		results= soup.find_all('p')
 
 		txt=''
-		for i in range(len(results)):
+		for i in range(6):
 			try:
 				if results[i].string[:24]=='Check the love potential':
 					break
