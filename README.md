@@ -12,6 +12,9 @@ The API scraps 3 websites
 It is a simple plug and play API. Compatible with any language and command line cURL. It delivers *JSON* files.
 Using Method: *GET*
 Available Status Codes: 200 (OK), 400 (Bad Request), 404 (Not Found), 503(Service Unavailable)
+[Home Page](http://devbrewer-horoscope.herokuapp.com/) contains all available API calls.
+
+Please pull a request for any issue.
 
 ## Versioning
 
@@ -19,4 +22,4 @@ Available Status Codes: 200 (OK), 400 (Bad Request), 404 (Not Found), 503(Servic
 
 ## License
 
-This project is licensed under the Apache License - see the [LICENSE](https://github.com/Bluff-0/FIFA-18-API/blob/master/LICENSE) file for details
+This project is licensed under the Apache License - see the [LICENSE](https://github.com/Bluff-0/devbrewer-horoscope/blob/master/LICENSE) file for details
