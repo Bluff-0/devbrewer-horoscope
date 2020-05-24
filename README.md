@@ -9,16 +9,24 @@ The API scraps 3 websites
 
 ## Use
 
-It is a simple plug and play API. Compatible with any language and command line cURL. It delivers *JSON* files.
+It is a simple plug and play API. Compatible with any language and command line CURL. It delivers *JSON* files.
 Using Method: *GET*
 Available Status Codes: 200 (OK), 400 (Bad Request), 404 (Not Found), 503(Service Unavailable)
 [Home Page](http://devbrewer-horoscope.herokuapp.com/) contains all available API calls.
+
+<pre>
+python app.py
+</pre>
 
 Please pull a request for any issue.
 
 ## Versioning
 
 ---0.9.1---
+
+## Language Used
+
+Python 3.7.3
 
 ## License
 
